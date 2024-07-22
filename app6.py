@@ -722,7 +722,7 @@ def sentiment_distribution_route():
     distribution_path = sentiment_distribution()
     if isinstance(distribution_path, tuple):
         return distribution_path  # Handle the error message
-    with open(distribution_path, "rb") as f):
+    with open(distribution_path, "rb") as f:
         image = f.read()
     return render_template('sentiment_distribution.html', image_data=base64.b64encode(image).decode('utf-8'))
 
