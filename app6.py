@@ -1,5 +1,4 @@
 from flask import Flask, render_template, request, redirect, url_for
-import time
 import numpy as np
 import requests
 import re
@@ -23,18 +22,12 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 from collections import Counter
 import csv
-import mplcyberpunk
 from urllib.parse import urljoin
-from transformers import AutoTokenizer, AutoModelForSequenceClassification
 import nltk
-import vk_api
 import json
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.common.keys import Keys
-from telebot import types
-from telegram import InlineKeyboardButton, InlineKeyboardMarkup
-from telegram import ReplyKeyboardMarkup
 from googleapiclient.discovery import build
 from wordcloud import WordCloud
 from nltk.tokenize import word_tokenize
@@ -42,7 +35,6 @@ from nltk.corpus import stopwords
 from transformers import pipeline
 from nltk.stem import WordNetLemmatizer
 from sklearn.feature_extraction.text import CountVectorizer
-from geopy.geocoders import Nominatim
 import folium
 from folium.plugins import HeatMap
 from opencage.geocoder import OpenCageGeocode
@@ -216,7 +208,7 @@ def preprocess_text(text):
     return ' '.join(lemmatized_tokens)
 
 def create_wordcloud_from_comments():
-    with open("comments.csv", "r", encoding="utf-8") as csvfile:
+    with open("comments.csv", "r", encoding="utf-8") as csvfile):
         reader = csv.reader(csvfile)
         comments = [row[0].replace('\n', ' ') for row in reader]
     wordcloud = WordCloud(width=800, height=400, background_color='white').generate(' '.join(comments))
@@ -281,7 +273,6 @@ def create_heatmap():
     heat_map.save(heatmap_path)
     return heatmap_path
 
-
 def create_clusters():
     with open("comments.csv", "r", encoding="utf-8") as csvfile:
         reader = csv.reader(csvfile)
@@ -342,7 +333,6 @@ def search_word_in_comments(word):
     matched_comments = df[df['comments'].str.contains(word, case=False, na=False)]
     matched_comments.to_csv('matched_comments.csv', index=False, encoding='utf-8')
     return matched_comments
-
 
 def sentiment_distribution():
     df = pd.read_csv("comments.csv")
@@ -503,7 +493,7 @@ def similarity_heatmap():
     # Кластеризация
     num_clusters = 5
     kmeans = KMeans(n_clusters=num_clusters, random_state=0).fit(tfidf_matrix)
-    clusters = kmeans.labels_
+    clusters = kmeans.labels()
     
     cluster_sim = np.zeros((num_clusters, num_clusters))
     for i in range(num_clusters):
@@ -732,7 +722,7 @@ def sentiment_distribution_route():
     distribution_path = sentiment_distribution()
     if isinstance(distribution_path, tuple):
         return distribution_path  # Handle the error message
-    with open(distribution_path, "rb") as f:
+    with open(distribution_path, "rb") as f):
         image = f.read()
     return render_template('sentiment_distribution.html', image_data=base64.b64encode(image).decode('utf-8'))
 
@@ -803,8 +793,4 @@ def corruption_map_route():
 if __name__ == '__main__':
     import multiprocessing
     multiprocessing.set_start_method('spawn')
-    
-    # app.run(debug=True, port=5001)
-
-
-
+    app.run(debug=True, port=5001)
