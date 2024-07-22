@@ -208,7 +208,7 @@ def preprocess_text(text):
     return ' '.join(lemmatized_tokens)
 
 def create_wordcloud_from_comments():
-    with open("comments.csv", "r", encoding="utf-8") as csvfile):
+    with open("comments.csv", "r", encoding="utf-8") as csvfile:
         reader = csv.reader(csvfile)
         comments = [row[0].replace('\n', ' ') for row in reader]
     wordcloud = WordCloud(width=800, height=400, background_color='white').generate(' '.join(comments))
